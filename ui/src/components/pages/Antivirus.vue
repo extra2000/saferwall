@@ -8,6 +8,7 @@
             <tr>
               <th>Antivirus</th>
               <th>Output</th>
+              <th>Update</th>
             </tr>
           </thead>
           <tbody>
@@ -52,6 +53,9 @@
                   </transition>
                 </span>
               </td>
+              <td>
+                {{ value.update }}
+              </td>
             </tr>
           </tbody>
         </table>
@@ -65,6 +69,7 @@
             <tr>
               <th>Antivirus</th>
               <th>Output</th>
+              <th>Update</th>
             </tr>
           </thead>
           <tbody>
@@ -108,6 +113,9 @@
                     ></copy>
                   </transition>
                 </span>
+              </td>
+              <td>
+                {{ value.update }}
               </td>
             </tr>
           </tbody>
