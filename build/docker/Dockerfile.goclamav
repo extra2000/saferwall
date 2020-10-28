@@ -59,4 +59,5 @@ RUN chown saferwall:saferwall /bin/clamavscanner \
 # Switch to our user
 USER saferwall
 
-ENTRYPOINT ["/bin/clamavscanner"]
+ENV LISTEN_PORT 10004
+ENTRYPOINT /bin/clamavscanner "${LISTEN_PORT}"

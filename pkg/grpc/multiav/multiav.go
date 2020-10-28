@@ -58,9 +58,9 @@ func NewServer(opts ...grpc.ServerOption) *grpc.Server {
 	return grpc.NewServer(append(DefaultServerOpts(), opts...)...)
 }
 
-// CreateListener creates a listener on TCP port 50051
-func CreateListener() (net.Listener, error) {
-	lis, err := net.Listen("tcp", port)
+// CreateListener creates a listener on TCP port
+func CreateListener(tcpPort string) (net.Listener, error) {
+	lis, err := net.Listen("tcp", tcpPort)
 	return lis, err
 }
 
