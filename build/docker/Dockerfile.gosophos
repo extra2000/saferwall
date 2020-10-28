@@ -58,4 +58,5 @@ RUN groupmod -g 102 saferwall
 # Switch to our user
 USER saferwall
 
-ENTRYPOINT ["/bin/sophosscanner"]
+ENV LISTEN_PORT 10011
+ENTRYPOINT /bin/sophosscanner "${LISTEN_PORT}"

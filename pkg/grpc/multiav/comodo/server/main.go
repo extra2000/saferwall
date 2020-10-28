@@ -5,6 +5,8 @@
 package main
 
 import (
+	"os"
+
 	"context"
 	"github.com/saferwall/saferwall/pkg/grpc/multiav"
 	pb "github.com/saferwall/saferwall/pkg/grpc/multiav/comodo/proto"
@@ -35,8 +37,11 @@ func (s *server) ScanFile(ctx context.Context, in *pb.ScanFileRequest) (*pb.Scan
 
 // main start a gRPC server and waits for connection.
 func main() {
-	// create a listener on TCP port 50051
-	lis, err := multiav.CreateListener()
+	args := os.Args[1:]
+	port := args[0]
+
+	// create a listener on TCP port
+	lis, err := multiav.CreateListener(":"+port)
 	if err != nil {
 		grpclog.Fatalf("failed to listen: %v", err)
 	}
