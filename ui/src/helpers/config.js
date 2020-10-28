@@ -5,7 +5,7 @@ dotenv.config()
 export default class Configuration {
     static get CONFIG() {
         return {
-            backendHost: '$VUE_APP_BACKEND_HOST',
+            backendHost: 'https://'+window.location.hostname,
         }
     }
 
