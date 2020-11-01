@@ -16,6 +16,7 @@ import (
 	"regexp"
 	"strings"
 	"time"
+	"strconv"
 
 	"github.com/kjk/betterguid"
 
@@ -422,7 +423,7 @@ func PostFiles(c echo.Context) error {
 	if fileHeader.Size > app.MaxFileSize {
 		return c.JSON(http.StatusRequestEntityTooLarge, Response{
 			Message:     "File too large",
-			Description: "The maximum allowed is 64MB",
+			Description: "The maximum allowed is " + strconv.FormatInt(app.MaxFileSize, 10) + " bytes",
 			Filename:    fileHeader.Filename,
 		})
 	}
