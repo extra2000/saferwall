@@ -76,11 +76,6 @@ export default {
         return
       }
 
-      // check if size exceeds 64mb
-      if (file.size > 64000000) {
-        this.$awn.alert("File size exceeds 64MB !")
-        return
-      }
       const reader = new FileReader()
       reader.onload = (loadEvent) => {
         // file has been read successfully
@@ -122,7 +117,11 @@ export default {
                       this.trackException()
                     }, 36000000)
                   })
-                  .catch(console.log)
+                  .catch((error) => {
+                    console.log(error.response)
+                    this.$awn.alert(error.response.data.message + ". " + error.response.data.description)
+                    this.trackException()
+                  })
               })
           })
           .catch(() => {
