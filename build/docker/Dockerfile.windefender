@@ -32,9 +32,9 @@ RUN apt-get install -qq libreadline-dev \
 # Download EICAR Anti-Virus Test File.
 ADD http://www.eicar.org/download/eicar.com.txt eicar
 
-# Performs a simple detection test.
-RUN cd $WINDOWS_DEFENDER_INSTALL_DIR \
-    && ./mpclient /eicar 2>&1 | grep -q 'Virus:DOS/EICAR_Test_File'
+# Performs a simple detection test. (podman build --security-opt seccomp=/path/to/seccomp.json is not yet supported in Podman 2.2.1)
+# RUN cd $WINDOWS_DEFENDER_INSTALL_DIR \
+#     && ./mpclient /eicar 2>&1 | grep -q 'Virus:DOS/EICAR_Test_File'
 
 # Clean up
 RUN rm -rf WINDOWS_DEFENDER_TMP \
