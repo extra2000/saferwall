@@ -11,7 +11,7 @@ import (
 	bs "github.com/saferwall/saferwall/pkg/bytestats"
 
 	"github.com/saferwall/saferwall/pkg/crypto"
-	"github.com/saferwall/saferwall/pkg/exiftool"
+	_ "github.com/saferwall/saferwall/pkg/exiftool"
 	"github.com/saferwall/saferwall/pkg/grpc/multiav"
 	avastclient "github.com/saferwall/saferwall/pkg/grpc/multiav/avast/client"
 	avast_api "github.com/saferwall/saferwall/pkg/grpc/multiav/avast/proto"
@@ -41,11 +41,11 @@ import (
 	trendmicro_api "github.com/saferwall/saferwall/pkg/grpc/multiav/trendmicro/proto"
 	windefenderclient "github.com/saferwall/saferwall/pkg/grpc/multiav/windefender/client"
 	windefender_api "github.com/saferwall/saferwall/pkg/grpc/multiav/windefender/proto"
-	"github.com/saferwall/saferwall/pkg/magic"
-	"github.com/saferwall/saferwall/pkg/packer"
+	_ "github.com/saferwall/saferwall/pkg/magic"
+	_ "github.com/saferwall/saferwall/pkg/packer"
 	peparser "github.com/saferwall/saferwall/pkg/peparser"
-	s "github.com/saferwall/saferwall/pkg/strings"
-	"github.com/saferwall/saferwall/pkg/trid"
+	_ "github.com/saferwall/saferwall/pkg/strings"
+	_ "github.com/saferwall/saferwall/pkg/trid"
 	"github.com/saferwall/saferwall/pkg/utils"
 	"github.com/spf13/viper"
 )
@@ -124,7 +124,6 @@ func (res *result) parseFile(b []byte, filePath string) {
 
 func staticScan(sha256, filePath string, b []byte) result {
 	res := result{}
-	var err error
 
 	// Size
 	res.Size = int64(len(b))
@@ -138,64 +137,6 @@ func staticScan(sha256, filePath string, b []byte) result {
 	res.Sha512 = r.Sha512
 	res.Ssdeep = r.Ssdeep
 	contextLogger.Debug("crypto pkg success")
-
-	// Get exif metadata.
-	res.Exif, err = exiftool.Scan(filePath)
-	if err != nil {
-		contextLogger.Errorf("exiftool pkg failed with: %v", err)
-	} else {
-		contextLogger.Debug("exiftool pkg success")
-	}
-
-	// Get TriD.
-	res.TriD, err = trid.Scan(filePath)
-	if err != nil {
-		contextLogger.Errorf("trid pkg failed with: %v", err)
-	} else {
-		contextLogger.Debug("trid pkg success")
-	}
-
-	// Get magic.
-	res.Magic, err = magic.Scan(filePath)
-	if err != nil {
-		contextLogger.Errorf("magic pkg failed with: %v", err)
-	} else {
-		contextLogger.Debug("magic pkg success")
-	}
-
-	// Get DiE
-	res.Packer, err = packer.Scan(filePath)
-	if err != nil {
-		contextLogger.Errorf("die pkg failed with: %v", err)
-	} else {
-		contextLogger.Debug("die pkg success")
-	}
-
-	// Extract strings.
-	n := 10
-	asciiStrings := s.GetASCIIStrings(b, n)
-	wideStrings := s.GetUnicodeStrings(b, n)
-	asmStrings := s.GetAsmStrings(b)
-
-	// Remove duplicates
-	uniqueASCII := utils.UniqueSlice(asciiStrings)
-	uniqueWide := utils.UniqueSlice(wideStrings)
-	uniqueAsm := utils.UniqueSlice(asmStrings)
-
-	var strResults []stringStruct
-	for _, str := range uniqueASCII {
-		strResults = append(strResults, stringStruct{"ascii", str})
-	}
-
-	for _, str := range uniqueWide {
-		strResults = append(strResults, stringStruct{"wide", str})
-	}
-
-	for _, str := range uniqueAsm {
-		strResults = append(strResults, stringStruct{"asm", str})
-	}
-	res.Strings = strResults
-	contextLogger.Debug("strings pkg success")
 
 	// Run the parsers
 	res.parseFile(b, filePath)
