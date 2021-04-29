@@ -2,7 +2,7 @@
 # STEP 1 build executable binary
 ################################
 
-FROM golang:1.15-alpine AS builder
+FROM docker.io/golang:1.15-alpine AS builder
 
 # Install git + SSL ca certificates.
 # Git is required for fetching the dependencies.
@@ -29,7 +29,7 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -ldflag
 # STEP 2 build a small image
 ############################
 
-FROM debian:stretch-slim as final
+FROM docker.io/debian:stretch-slim as final
 LABEL maintainer="https://github.com/saferwall"
 LABEL version="0.1.0"
 LABEL description="Saferwall backend"

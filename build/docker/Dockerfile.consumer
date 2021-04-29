@@ -2,7 +2,7 @@
 # STEP 1 build executable binary
 ################################
 
-FROM golang:1.15-alpine AS builder
+FROM docker.io/golang:1.15-alpine AS builder
 
 # Install git + SSL ca certificates.
 # Git is required for fetching the dependencies.
@@ -35,7 +35,7 @@ RUN GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -ldflags '-extldflags
 ############################
 # STEP 2 build a small image
 ############################
-FROM ubuntu:bionic
+FROM docker.io/ubuntu:bionic
 LABEL maintainer="https://github.com/saferwall"
 LABEL version="0.1.0"
 LABEL description="NSQ consumer in a docker container"

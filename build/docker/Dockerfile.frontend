@@ -2,7 +2,7 @@
 # STEP 1 build executable binary
 ################################
 
-FROM node:10-alpine as build-stage
+FROM docker.io/node:10-alpine as build-stage
 
 # Install git + SSL ca certificates.
 # Git is required for fetching the dependencies.
@@ -30,7 +30,7 @@ RUN yarn build
 # STEP 2 build a small image
 ############################
 
-FROM nginx:stable-alpine as production-stage
+FROM docker.io/nginx:stable-alpine as production-stage
 LABEL maintainer="https://github.com/saferwall"
 LABEL version="0.1.0"
 LABEL description="Saferwall UI Dashboard"
